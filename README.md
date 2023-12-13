@@ -2,7 +2,7 @@
 
 ## Description
 
-A Website design for Valley View University Faculty Of Sciences.
+A Website for Valley View University Faculty Of Sciences.
 
 ## Table of Contents
 

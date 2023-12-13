@@ -40,4 +40,4 @@ To run this project locally, follow these steps:
 4. Start the application:
     ```sh
     npm run dev
-        ```
+    ```

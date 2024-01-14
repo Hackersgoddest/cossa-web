@@ -2,97 +2,54 @@
 import { RouterLink } from "vue-router";
 import { activeRoutePathNamesKey } from "./keys";
 import { ref, inject } from "vue";
+import AngleDown from "../assets/icons/AngleDown.vue";
+import LargeScreenSubMenuItems from "./LargeScreenSubMenuItems.vue";
 
 const props = defineProps({
   menus: Array,
 });
 
 const { currentPathNames } = inject(activeRoutePathNamesKey);
-const firstActiveMenu = ref(null);
-const secondActiveMenu = ref([]);
+const activeMenu = ref(null);
 
-const firstHandleMouseOver = (submenu) => {
-  firstActiveMenu.value = submenu;
-};
-const secondHandleMouseOver = (submenu) => {
-  secondActiveMenu.value.push(submenu);
+const onMouseOver = (submenu) => {
+  activeMenu.value = submenu;
 };
 
-const firstHandleMouseOut = () => {
-  firstActiveMenu.value = null;
-  secondActiveMenu.value.splice(0, secondActiveMenu.value.length);
+const onMouseOut = () => {
+  activeMenu.value = null;
 };
 </script>
 <template>
   <div class="md:gap-4 hidden md:flex relative">
     <template v-for="menu of menus" :key="menu.id">
-      <div @mouseover="firstHandleMouseOver(menu.name)">
+      <div
+        @mouseover="onMouseOver(menu.name)"
+        @mouseleave="onMouseOut()"
+        class="relative group"
+      >
         <RouterLink
           :to="{ name: menu.name }"
-          class="hover:cursor-pointer px-1 py-3 hover:text-[#3F51B5] capitalize transition ease-in-out duration-300 w-fit"
+          class="group hover:cursor-pointer group-hover:text-[#3F51B5] px-1 py-3 capitalize transition ease-in-out duration-300 w-fit flex items-center"
           :class="[
             Array.isArray(currentPathNames) &&
             (currentPathNames.includes(menu.name) ||
               currentPathNames.includes(`${menu.name} Home`))
               ? 'text-[#3F51B5] font-semibold'
               : '',
-            firstActiveMenu === menu.name
-              ? 'underline underline-offset-[12px] decoration-[#3F51B5] decoration-2'
-              : '',
           ]"
         >
           {{ menu.name }}
+          <AngleDown
+            v-if="menu.hasSubMenu"
+            class="h-5 w-5 mt-1 my-auto group-hover:fill-[#3F51B5] group-focus:fill-[#3F51B5]"
+          />
         </RouterLink>
-        <div
-          @mouseleave="firstHandleMouseOut()"
-          v-if="menu.hasSubMenu && firstActiveMenu === menu.name"
-          class="w-full max-w-screen-xl bg-black bg-opacity-70 overflow-auto text-white flex gap-4 font-semibold text-justify flex-wrap p-4 absolute top-10 left-0 border-t-2 border-[#3F51B5]"
-        >
-          <template v-for="submenu of menu.submenus" :id="submenu.id">
-            <div class="w-fit h-fit flex flex-col text-base flex-wrap">
-              <RouterLink
-                @mouseover="secondHandleMouseOver(submenu.name)"
-                :to="{ name: submenu.name }"
-                class="w-fit h-fit flex items-center hover:cursor-pointer hover:text-[#3F51B5] capitalize transition ease-in-out duration-300"
-                :class="[
-                  (currentPathNames &&
-                    currentPathNames?.includes(submenu.name)) ||
-                  (currentPathNames &&
-                    currentPathNames?.includes(`${submenu.name} Home`))
-                    ? 'text-[#3F51B5] font-semibold'
-                    : '',
-                ]"
-              >
-                {{ submenu.name }}
-              </RouterLink>
-              <div
-                v-if="
-                  submenu.hasSubMenu && secondActiveMenu.includes(submenu.name)
-                "
-                class="w-fit flex h-fit flex-col flex-wrap gap-2 text-sm font-normal"
-              >
-                <template
-                  v-for="innerMenu of submenu.submenus"
-                  :key="innerMenu.id"
-                >
-                  <RouterLink
-                    :to="{ name: innerMenu.name }"
-                    class="h-full flex items-center hover:cursor-pointer hover:text-[#3F51B5] capitalize transition ease-in-out duration-300"
-                    :class="[
-                      (currentPathNames &&
-                        currentPathNames?.includes(innerMenu.name)) ||
-                      (currentPathNames &&
-                        currentPathNames?.includes(`${innerMenu.name} Home`))
-                        ? 'text-[#3F51B5] font-semibold'
-                        : '',
-                    ]"
-                    >{{ innerMenu.name }}</RouterLink
-                  >
-                </template>
-              </div>
-            </div>
-          </template>
-        </div>
+        <LargeScreenSubMenuItems
+          @click="activeMenu = null"
+          v-if="menu.hasSubMenu && activeMenu === menu.name"
+          :menus="menu.submenus"
+        />
       </div>
     </template>
   </div>

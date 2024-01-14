@@ -133,7 +133,7 @@ import CirclePlay from "../../assets/icons/CirclePlay.vue";
           </div>
         </div>
         <div
-          class="h-[15%] absolute right-0 bottom-0 mr-4 xl:mr-0 bg-white w-1/2 uppercase text-xl xs:text-2xl sm:text-3xl md:text-4xl lg:text-5xl flex justify-center items-center tracking-[0.5rem] sm:tracking-[1rem] md:tracking-[1.5rem] font-medium font-['Lato']"
+          class="h-[15%] absolute right-0 -bottom-[1px] mr-4 xl:mr-0 bg-white w-1/2 uppercase text-xl xs:text-2xl sm:text-3xl md:text-4xl lg:text-5xl flex justify-center items-center tracking-[0.5rem] sm:tracking-[1rem] md:tracking-[1.5rem] font-medium font-['Lato']"
         >
           sports
         </div>
@@ -157,7 +157,6 @@ import CirclePlay from "../../assets/icons/CirclePlay.vue";
     </div>
     <div
       class="flex items-center justify-center font-['Lato'] w-1/2 font-light xl:pr-8"
-    >
-    </div>
+    ></div>
   </div>
 </template>

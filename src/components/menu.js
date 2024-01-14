@@ -63,6 +63,7 @@ const menus = ref([
         id: 1,
         name: "Admission Requirement",
         hasSubMenu: true,
+        submenus: [],
       },
       { id: 2, name: "Fee Structure", hasSubMenu: false },
       {
@@ -78,7 +79,8 @@ const menus = ref([
       {
         id: 5,
         name: "Apply Now (Undergraduate)",
-        hasSubMenu: false,
+        hasSubMenu: true,
+        submenus: [],
       },
     ],
   },

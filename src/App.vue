@@ -1,6 +1,6 @@
 <script setup>
 import { RouterView, useRoute } from "vue-router";
-import { ref, watch, provide, onBeforeUpdate } from "vue";
+import { ref, watch, provide } from "vue";
 import MainNavBar from "./components/MainNavBar.vue";
 import Footer from "./components/Footer.vue";
 import { activeRoutePathNamesKey } from "./components/keys";
@@ -18,7 +18,7 @@ watch(
   (newPath) => {
     showLogo.value = newPath === "/";
     currentPathNames.value = route.matched.map((obj) => obj.name);
-  },
+  }
 );
 </script>
 

@@ -31,7 +31,11 @@
       />
       <transition name="fade">
         <div
-          v-if="submenu.hasSubMenu && activeMenu === submenu.name"
+          v-if="
+            submenu.hasSubMenu &&
+            activeMenu === submenu.name &&
+            submenu.submenus?.length
+          "
           class="bg-black bg-opacity-80 absolute top-6 w-64"
           :style="menuStyles"
         >

@@ -46,21 +46,6 @@ onMounted(() => {
       });
     });
 
-    // Animation timeline for image
-    // const imageTimeline = gsap.timeline({
-    //   defaults: { opacity: 0, scale: 0.2, rotate: 360 },
-    // });
-    // image.forEach((item) => {
-    //   imageTimeline.from(item, {
-    //     scrollTrigger: {
-    //       trigger: item,
-    //       start: "top bottom",
-    //       end: "top center",
-    //       scrub: true,
-    //     },
-    //   });
-    // });
-
     // Animation timeline for image cover
     const imageCoverTimeline = gsap.timeline({
       defaults: { opacity: 0 },
@@ -130,12 +115,14 @@ const carouselsArray = ref([
       alt="home cover pic"
       class="object-cover h-screen w-full object-center"
     />
-    <DownArrow
-      @click="scrollToMainContent"
-      class="w-14 h-14 fill-white z-10 absolute bottom-2 left-1/2 -translate-x-1/2 cursor-pointer animate-bounce"
-    />
+    <div class="w-screen z-10 absolute bottom-2 left-0 flex justify-center">
+      <DownArrow
+        @click="scrollToMainContent"
+        class="w-14 h-14 fill-white cursor-pointer animate-bounce"
+      />
     </div>
-    <div class="relative" ref="main" id="main">
+  </div>
+  <div class="relative" ref="main" id="main">
     <div class="max-w-screen-xl mx-auto flex justify-end px-4 xl:px-0">
       <div
         class="flex flex-col my-20 gap-8 max-w-screen-sm items-start relative"

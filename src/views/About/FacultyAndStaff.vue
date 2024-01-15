@@ -2,7 +2,10 @@
 import EmailIcon from "../../assets/icons/Email.vue";
 import HR from "../../assets/icons/HR.vue";
 import Calender from "../../assets/icons/Calender.vue";
-import { shallowRef } from "vue";
+import { shallowRef, onMounted, watch } from "vue";
+import SearchIcon from "../../assets/icons/SearchIcon.vue";
+import Close from "../../assets/icons/Close.vue";
+import staffs from "../../components/faculty-and-staff";
 
 const topLinks = shallowRef([
   {
@@ -19,53 +22,29 @@ const topLinks = shallowRef([
   },
 ]);
 
-const staffs = shallowRef([
-  {
-    name: "John Kingsley Arthur",
-    postion: "Senior Lecturer",
-    imageUrl: "/about/faculty-and-staff/kingsley-arthur.jpg",
-  },
-  {
-    name: "J. Abandoh-sam",
-    postion: "Senior Lecturer",
-    imageUrl: "/about/faculty-and-staff/J. Abandoh-sam.jpg",
-  },
-  {
-    name: "Prince Yaw Owusu Amoako",
-    postion: "Senior Lecturer",
-    imageUrl: "/about/faculty-and-staff/Prince Yaw Owusu Amoako.jpg",
-  },
-  {
-    name: "A. Salako",
-    postion: "Senior Lecturer",
-    imageUrl: "/about/faculty-and-staff/a. Salako.jpg",
-  },
-  {
-    name: "Kingsley Arthur",
-    postion: "Senior Lecturer",
-    imageUrl: "/about/faculty-and-staff/kingsley-arthur.jpg",
-  },
-  {
-    name: "Kingsley Arthur",
-    postion: "Senior Lecturer",
-    imageUrl: "/about/faculty-and-staff/kingsley-arthur.jpg",
-  },
-  {
-    name: "Kingsley Arthur",
-    postion: "Senior Lecture",
-    imageUrl: "/about/faculty-and-staff/kingsley-arthur.jpg",
-  },
-  {
-    name: "Kingsley Arthur",
-    postion: "Senior Lecturer",
-    imageUrl: "/about/faculty-and-staff/kingsley-arthur.jpg",
-  },
-  {
-    name: "Micheal kelly",
-    postion: "Junior Lecturer",
-    imageUrl: "/about/faculty-and-staff/Micheal kelly.jpg",
-  },
-]);
+let searchValue = shallowRef(null);
+let facultyAndStaff = shallowRef([]);
+
+onMounted(() => (facultyAndStaff.value = staffs));
+
+watch(searchValue, (newSearchValue) => {
+  facultyAndStaff.value = staffs.filter(
+    (item) =>
+      item?.name?.toLowerCase().includes(newSearchValue?.toLowerCase()) ||
+      item?.position
+        ?.toLocaleLowerCase()
+        .includes(newSearchValue?.toLowerCase())
+  );
+  if (newSearchValue) showCloseMenu = true;
+  else showCloseMenu = false;
+});
+
+const input = shallowRef(null);
+const focusInput = () => {
+  input.value.focus();
+};
+
+let showCloseMenu = shallowRef(false);
 </script>
 <template>
   <div class="relative">
@@ -106,12 +85,24 @@ const staffs = shallowRef([
     </div>
   </div>
   <div class="max-w-screen-xl h-full mx-auto font-['Lato'] mt-20">
-    <div class="w-full h-12 flex my-20 px-4 sm:px-0">
+    <div class="w-4/5 h-14 flex my-20 relative max-w-2xl ml-4">
       <input
         type="text"
         name="text"
         id="filter"
-        class="w-full h-full bg-gray-200 rounded-sm border-none focus:outline-none px-4 text-[#272224]"
+        ref="input"
+        placeholder="Search"
+        v-model="searchValue"
+        class="w-full h-full bg-white bg-opacity-90 shadow-lg rounded border-none focus:outline-none px-12 text-[#272224]"
+      />
+      <SearchIcon
+        @click="focusInput"
+        class="absolute top-1/2 -translate-y-1/2 left-1 flex w-8 h-6 stroke-2 stroke-gray-400 cursor-text"
+      />
+      <Close
+        v-if="showCloseMenu"
+        @click="searchValue = ''"
+        class="absolute top-1/2 -translate-y-1/2 right-2 flex w-8 h-8 stroke-2 stroke-[#272224] hover:cursor-pointer hover:stroke-[#3F51B5] transform hover:scale-110 transition-transform ease-in-out duration-300"
       />
     </div>
     <div
@@ -119,7 +110,7 @@ const staffs = shallowRef([
     >
       <div
         class="flex flex-col items-center text-[#272224]"
-        v-for="lecturer of staffs"
+        v-for="lecturer of facultyAndStaff"
       >
         <div class="w-56 h-56 rounded-full overflow-clip">
           <img
@@ -132,7 +123,7 @@ const staffs = shallowRef([
           class="flex flex-col h-24 w-64 bg-[#D9D9D9] -mt-8 items-center justify-center"
         >
           <p class="font-light">{{ lecturer.name }}</p>
-          <p class="font-extrabold">{{ lecturer.postion }}</p>
+          <p class="font-extrabold">{{ lecturer.position }}</p>
         </div>
       </div>
     </div>
